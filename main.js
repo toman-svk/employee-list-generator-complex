@@ -15,13 +15,20 @@ document.addEventListener('DOMContentLoaded', function () {
       return;
     }
 
-    const dtoOut = window.employeeGenerator.generateEmployees(dtoIn);
+    const dtoOut = window.employeeGenerator.generateEmployeeData(dtoIn);
+
+    const dtoOutStatistics = window.employeeAnalyzer.getEmployeeStatistics(dtoOut);
+    const statisticsDiv = document.getElementById('dtoOutStatistics');
+    const statisticsString = JSON.stringify(dtoOutStatistics,null,2);
+    const statisticsPre = document.createElement('pre');
+    statisticsDiv.innerHTML = '<h2>Employees Statistics:</h2>';
+    statisticsPre.textContent = statisticsString;
+    statisticsDiv.appendChild(statisticsPre);
 
     const outputDiv = document.getElementById('output');
-    outputDiv.innerHTML = '<h2>Generated Employees:</h2>';
-    
     const outputString = JSON.stringify(dtoOut, null, 2);
     const outputPre = document.createElement('pre');
+    outputDiv.innerHTML = '<h2>Generated Employees:</h2>';
     outputPre.textContent = outputString;
     outputDiv.appendChild(outputPre);
   }
