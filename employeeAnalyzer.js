@@ -41,6 +41,7 @@ function getMedian(orderedArray) {
     }
 }
 
+// main function of the module
 function getEmployeeStatistics(employees) {
 
     // define output structure
@@ -61,11 +62,12 @@ function getEmployeeStatistics(employees) {
     // define other variables
     let womenWorkload = 0;
     let womenCount = 0; 
+    let totalAge = 0;
     const orderedWorkloads = [];
     const currentDate = new Date();
     const orderedAges = [];
 
-    // loop through employees data and gather info
+    // loop through employees data and gather info for further calculations
     for (let i = 0; i < employees.length; i++) {
         const employee = employees[i];
         const workload = employee.workload;
@@ -93,19 +95,20 @@ function getEmployeeStatistics(employees) {
         }
 
         const age = calculateAge(employee.birthdate, currentDate);
+        totalAge += age;
         addToOrderedArray(orderedAges, age);
-
     }
 
+    // populate statistics object
     statistics.total = employees.length;
+    statistics.averageAge = (totalAge / employees.length).toFixed(1);
     statistics.averageWomenWorkload = womenWorkload / womenCount;
-    
     statistics.medianWorkload = getMedian(orderedWorkloads);
-
-    console.log(orderedWorkloads);
+    statistics.medianAge = getMedian(orderedAges);
+    statistics.minAge = orderedAges[0];
+    statistics.maxAge = orderedAges[orderedAges.length-1];
 
     return statistics;
-
 };
 
 window.employeeAnalyzer = { getEmployeeStatistics };

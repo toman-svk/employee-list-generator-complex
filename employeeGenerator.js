@@ -45,8 +45,23 @@ const getRandomBirthdate = (minAge, maxAge) => {
   return new Date(randomYear, randomMonth - 1, randomDay).toISOString();
 };
 
+function sortEmployees(employeeData) {
+  const sortedData = [...employeeData];
+
+  for (let i = 0; i < sortedData.length - 1; i++) {
+    for (let j = 0; j < sortedData.length - i - 1; j++) {
+      if (sortedData[j].workload > sortedData[j + 1].workload) {
+        const temp = sortedData[j];
+        sortedData[j] = sortedData[j + 1];
+        sortedData[j + 1] = temp;
+      }
+    }
+  }
+  return sortedData;
+}
+
 const generateEmployeeData = (dtoIn) => {
-  const dtoOut = [];
+  const employeeData = [];
 
   for (let i = 0; i < dtoIn.count; i++) {
     const gender = getRandom(genders);
@@ -58,8 +73,10 @@ const generateEmployeeData = (dtoIn) => {
       workload: getRandom(workloads)
     };
 
-    dtoOut.push(employee);
+    employeeData.push(employee);
   }
+
+  const dtoOut = sortEmployees(employeeData);
 
   return dtoOut;
 };
