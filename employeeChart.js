@@ -20,6 +20,20 @@ const employees = [
         "name": "Veronika",
         "surname": "Bartošová",
         "workload": 30
+    },
+    {
+        "gender": "female",
+        "birthdate": "1995-09-17T22:00:00.000Z",
+        "name": "Veronika",
+        "surname": "Bartošová",
+        "workload": 40
+    },
+    {
+        "gender": "male",
+        "birthdate": "1995-09-17T22:00:00.000Z",
+        "name": "Filip",
+        "surname": "Tomanka",
+        "workload": 40
     }
 ];
 
@@ -29,6 +43,23 @@ function addOrUpdateName(inputObject, inputName) {
     } else {
         inputObject[inputName] = 1;
     }
+}
+
+const mergeAndSumCounts = (obj1, obj2) => {
+    return [...new Set([...Object.keys(obj1), ...Object.keys(obj2)])].reduce((acc, key) => {
+        acc[key] = (obj1[key] || 0) + (obj2[key] || 0);
+        return acc;
+    }, {});
+};  
+
+function convertToChartData(names) {
+    const chartData = {};
+    for (const key in names) {
+        chartData[key] = Object.entries(names[key]).map(([label, value]) => {
+            return { label, value };
+        }).sort((a, b) => b.value - a.value);
+    }
+    return { chartData };
 }
 
 function getEmployeeChartContent(employees) {
@@ -41,7 +72,6 @@ function getEmployeeChartContent(employees) {
     employees.forEach(person => {
 
         if (person.gender === "female") {
-            console.log(person.name + " is female.");
 
             if (person.workload === 40) {
                 addOrUpdateName(femaleFullTime, person.name);
@@ -50,7 +80,6 @@ function getEmployeeChartContent(employees) {
             }
         }
         if (person.gender === "male") {
-            console.log(person.name + " is male.");
 
             if (person.workload == 40) {
                 addOrUpdateName(maleFullTime, person.name);
@@ -60,19 +89,28 @@ function getEmployeeChartContent(employees) {
         }
     });
 
-    const female = {
-        ...femalePartTime,
-        ...femaleFullTime
-        };
+    const female = mergeAndSumCounts(femalePartTime, femaleFullTime);
+    const male = mergeAndSumCounts(malePartTime, maleFullTime);
+    const all = mergeAndSumCounts(female, male);
+    
+    const names = {
+        all: all,
+        male: male,
+        female: female,
+        femalePartTime: femalePartTime,
+        maleFullTime: maleFullTime
+    }
 
-    const male = {
-        ...malePartTime,
-        ...maleFullTime
-        };
+    const convertedData = convertToChartData(names);
+    console.log(convertedData);
 
-    console.log(female);
-    console.log(male);
+    const output = {
+        names: names,
+        chartData: convertedData
+    };
 
+    return output;
+    //console.log(JSON.stringify(output, null, 1));
 
 }
 
@@ -80,4 +118,4 @@ getEmployeeChartContent(employees);
 
 
 
-// window.employeeChart = { getEmployeeChartContent };
+//window.employeeChart = { getEmployeeChartContent };

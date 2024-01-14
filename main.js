@@ -25,12 +25,22 @@ document.addEventListener('DOMContentLoaded', function () {
       sortedByWorkload: [...employeeData]
     };
 
-    const outputDiv = document.getElementById('output');
-    const outputString = JSON.stringify(dtoOut, null, 2);
+    const chartOut = getEmployeeChartContent(employeeData);
+
+    const outputDiv = document.getElementById('output1');
+    const outputString = JSON.stringify(chartOut, null, 1);
     const outputPre = document.createElement('pre');
-    outputDiv.innerHTML = '<h2>Generated output:</h2>';
+    outputDiv.innerHTML = '<h2>employeeChart output:</h2>';
     outputPre.textContent = outputString;
     outputDiv.appendChild(outputPre);
+
+
+    const outputDiv2 = document.getElementById('output2');
+    const outputString2 = JSON.stringify(dtoOut, null, 2);
+    const outputPre2 = document.createElement('pre2');
+    outputDiv2.innerHTML = '<h2>employeeAnalyzer output:</h2>';
+    outputPre2.textContent = outputString2;
+    outputDiv2.appendChild(outputPre2);
   }
 
   // Attach the main function to a button click event
